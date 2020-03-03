@@ -14,8 +14,11 @@ import json
 @csrf_exempt
 @api_view(["GET"])
 def initialize(request):
+    
     user = request.user
+    
     player = user.player
+    
     player_id = player.id
     uuid = player.uuid
     room = player.room()
@@ -65,3 +68,12 @@ def move(request):
 def say(request):
     # IMPLEMENT
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
+
+
+@api_view(["GET"])
+def allmaps(request):
+    all_rooms = Room.objects.all()
+    res = {}
+    for i in all_rooms:
+        res[i.roomid] = {'x_pos': i.pos_x, 'y_pos':i.pos_y}
+    return JsonResponse(res)
