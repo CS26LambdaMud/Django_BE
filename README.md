@@ -93,18 +93,38 @@ These are implemented on the test server: `https://lambda-mud-test.herokuapp.com
   * `curl -X POST -H "Content-Type: application/json" -d '{"username":"testuser", "password":"testpassword"}' localhost:8000/api/login/`
 * Response:
   * `{"key":"6b7b9d0f33bd76e75b0a52433f268d3037e42e66"}`
+  
+### Map
+* Request:
+  * `curl -X GET -H 'Authorization: Token 6b7b9d0f33bd76e75b0a52433f268d3037e42e66' localhost:8000/api/adv/map/` localhost:8000/api/adv/map`
+* Response:
+  * `{'476': {'x_pos': 15, 'y_pos': 18, 'room_type': 1},
+ '475': {'x_pos': 14, 'y_pos': 18, 'room_type': 1},...`'458': {'x_pos': 17, 'y_pos': 14, 'room_type': 1}}  
 
 ### Initialize
 * Request:  (Replace token string with logged in user's auth token)
   * `curl -X GET -H 'Authorization: Token 6b7b9d0f33bd76e75b0a52433f268d3037e42e66' localhost:8000/api/adv/init/`
 * Response:
-  * `{"uuid": "c3ee7f04-5137-427e-8591-7fcf0557dd7b", "name": "testuser", "title": "Outside Cave Entrance", "description": "North of you, the cave mount beckons", "players": []}`
+  * `{'uuid': '3025ddee-106d-4980-89da-63e13eeaa0e9',
+ 'name': 'teasaaaaaaadtuser',
+ 'pos_x': 13,
+ 'pos_y': 6,
+ 'items_in_room': {'Pillow': 'cd4b703f-6568-429c-812c-351f469f1337',
+  'Rope': '8cb781f2-f6a0-455d-81fb-ab47f3966c2c'},
+ 'player_items': {'Candle': '3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c'},
+ 'players': []}`
 
 ### Move
 * Request:  (Replace token string with logged in user's auth token)
   * `curl -X POST -H 'Authorization: Token 6b7b9d0f33bd76e75b0a52433f268d3037e42e66' -H "Content-Type: application/json" -d '{"direction":"n"}' localhost:8000/api/adv/move/`
 * Response:
-  * `{"name": "testuser", "title": "Foyer", "description": "Dim light filters in from the south. Dusty\npassages run north and east.", "players": [], "error_msg": ""}`
+  * `{'name': 'teasaaaaaaadtuser',
+ 'pos_x': 10,
+ 'pos_y': 4,
+ 'players': [],
+ 'items_in_room': {'Rope': '8cb781f2-f6a0-455d-81fb-ab47f3966c2c'},
+ 'player_items': {'Candle': '3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c'},
+ 'error_msg': ''}`
 * Pusher broadcast (stretch):
   * Players in previous room receive a message: `<name> has walked north.`
   * Players in next room receive a message: `<name> has entered from the south.`
@@ -114,12 +134,27 @@ These are implemented on the test server: `https://lambda-mud-test.herokuapp.com
   * `curl -X POST -H 'Authorization: Token 6b7b9d0f33bd76e75b0a52433f268d3037e42e66' -H "Content-Type: application/json" -d '{"itemid":"3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c"}' localhost:8000/api/adv/pickup/`
 * Response:
   * `{'name': 'teasaaaaaaadtuser',
-       'pos_x': 9,
-       'pos_y': 6,
-       'players': [],
-       'items_in_room': None,
-       'player_items': {'Candle': '3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c'},
-       'error_msg': ''}`
+ 'pos_x': 13,
+ 'pos_y': 6,
+ 'players': [],
+ 'items_in_room': {'Pillow': 'cd4b703f-6568-429c-812c-351f469f1337'},
+ 'player_items': {'Candle': '3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c',
+  'Rope': '8cb781f2-f6a0-455d-81fb-ab47f3966c2c'},
+ 'error_msg': ''}`
+ 
+ ### Drop Item (Stretch)
+* Request:  (Replace token string with logged in user's auth token)
+  * `curl -X POST -H 'Authorization: Token 6b7b9d0f33bd76e75b0a52433f268d3037e42e66' -H "Content-Type: application/json" -d '{"itemid":"3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c"}' localhost:8000/api/adv/drop/`
+* Response:
+  * `{'name': 'teasaaaaaaadtuser',
+ 'pos_x': 13,
+ 'pos_y': 6,
+ 'players': [],
+ 'items_in_room': {'Pillow': 'cd4b703f-6568-429c-812c-351f469f1337',
+  'Rope': '8cb781f2-f6a0-455d-81fb-ab47f3966c2c'},
+ 'player_items': {'Candle': '3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c'},
+ 'error_msg': ''}`
+ 
 * Pusher broadcast (stretch):
   * Players in previous room receive a message: `<name> has walked north.`
   * Players in next room receive a message: `<name> has entered from the south.`
