@@ -108,6 +108,21 @@ These are implemented on the test server: `https://lambda-mud-test.herokuapp.com
 * Pusher broadcast (stretch):
   * Players in previous room receive a message: `<name> has walked north.`
   * Players in next room receive a message: `<name> has entered from the south.`
+  
+### Pick up Item (Stretch)
+* Request:  (Replace token string with logged in user's auth token)
+  * `curl -X POST -H 'Authorization: Token 6b7b9d0f33bd76e75b0a52433f268d3037e42e66' -H "Content-Type: application/json" -d '{"itemid":"3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c"}' localhost:8000/api/adv/pickup/`
+* Response:
+  * `{'name': 'teasaaaaaaadtuser',
+       'pos_x': 9,
+       'pos_y': 6,
+       'players': [],
+       'items_in_room': None,
+       'player_items': {'Candle': '3df2357f-603a-4bfa-a5fd-9e5a24c5ea9c'},
+       'error_msg': ''}`
+* Pusher broadcast (stretch):
+  * Players in previous room receive a message: `<name> has walked north.`
+  * Players in next room receive a message: `<name> has entered from the south.`
 
 ### Say (stretch)
 * Request:  (Replace token string with logged in user's auth token)
