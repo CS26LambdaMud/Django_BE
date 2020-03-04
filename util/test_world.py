@@ -1,11 +1,16 @@
 from django.contrib.auth.models import User
-from adventure.models import Player, Room
+from adventure.models import Player, Room, Item
 
 import numpy as np
 import random
 
 
 Room.objects.all().delete()
+Item.objects.all().delete()
+User.objects.all().delete()
+Player.objects.all().delete()
+
+items = ['Sword', 'Shield', 'Gun', 'Rope', 'Hammer', 'Flamethrower', 'Pillow', 'Candle', 'Helmet', 'Pizza']
 
 
 def create_zeros(lenth):
@@ -119,7 +124,6 @@ while rooms < counter:
 new_size = lenth + 2
 
 new_map = np.zeros((new_size, new_size))
-print(Room.objects.all())
 
 new_size = lenth + 2
 
@@ -173,5 +177,28 @@ for i in range(lenth):
             for vals in looks:
                 intval = int(vals[0])
                 if intval != 0:
-                    room_to_connect = Room.objects.get(roomid=selected_room_id)
-                    selected_room.connectRooms(room_to_connect, vals[1])    
+                    
+                    room_to_connect = Room.objects.get(roomid=intval)
+                    selected_room.connectRooms(room_to_connect, vals[1])
+            isitem = random.choice([0,0,1])
+            if isitem == 1:
+                selecteditem = random.choice(items)
+                itemroom = Item(name=selecteditem, room_id=selected_room.id)
+                itemroom.save()
+                       
+roomlist = [i for i in Room.objects.all()]
+
+roomrand = random.choice(roomlist)
+roomrand.roomtype = 3
+roomrand.save()
+roomlist.remove(roomrand)
+
+for i in range(5):
+    roomrand = random.choice(roomlist)
+    roomrand.roomtype = 2
+    roomrand.save()
+    roomlist.remove(roomrand)   
+
+
+
+print(Item.objects.all())
