@@ -9,6 +9,7 @@ class Room(models.Model):
     roomid = models.IntegerField(default=0)
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
+    roomtype = models.IntegerField(default=1)
     n_to = models.IntegerField(default=0)
     s_to = models.IntegerField(default=0)
     e_to = models.IntegerField(default=0)
@@ -54,6 +55,12 @@ class Player(models.Model):
         except Room.DoesNotExist:
             self.initialize()
             return self.room()
+
+class Item(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50, default="ITEM")
+    player_id = models.IntegerField(default=0)
+    room_id = models.IntegerField(default=0)
 
 @receiver(post_save, sender=User)
 def create_user_player(sender, instance, created, **kwargs):

@@ -13,3 +13,4 @@ sudo heroku container:release web -a advapi
 
 # run migrations
 sudo heroku run python3 manage.py migrate -a advapi
+
